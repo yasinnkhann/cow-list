@@ -20,9 +20,9 @@ connection.connect((err) => {
 
 // Don't forget to export your functions!
 module.exports = {
-  // db: connection,
-  getAll: function(cb) {
-    connection.query('SELECT * FROM cows2;', (err, data) => {
+  getAllCows: function(cb) {
+    const queryStr = 'SELECT * FROM cows2;';
+    connection.query(queryStr, (err, data) => {
       if (err) {
         cb(err, null);
       } else {
@@ -30,11 +30,37 @@ module.exports = {
       }
     })
   },
-  create: function(cowDetails, cb) {
+
+  createCow: function(cowDetails, cb) {
     const name = cowDetails.name;
     const description = cowDetails.description;
+    const queryStr = 'INSERT INTO cows2 (name, description) VALUES (?, ?);';
 
-    connection.query('INSERT INTO cows2 (name, description) VALUES (?, ?);', [name, description], (err, data) => {
+    connection.query(queryStr, [name, description], (err, data) => {
+      if (err) {
+        cb(err, null);
+      } else {
+        cb(null, data);
+      }
+    })
+  },
+
+  updateCow: function(id, cowToUpdate, cb) {
+    const queryStr = 'UPDATE cows2 SET name = ?, description = ? WHERE id = ?;';
+    const name = cowToUpdate.name;
+    const description = cowToUpdate.description;
+    connection.query(queryStr, [name, description, id], (err, data) => {
+      if (err) {
+        cb(err, null);
+      } else {
+        cb(null, data);
+      }
+    })
+  },
+
+  deleteCow: function(id, cb) {
+    const queryStr = 'DELETE FROM cows2 WHERE id = ?;';
+    connection.query(queryStr, id, (err, data) => {
       if (err) {
         cb(err, null);
       } else {
