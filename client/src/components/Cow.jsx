@@ -1,21 +1,14 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 
-export default class Cow extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    // BINDERS
-  };
+export default function Cow ({ cowObj, nameClick }) {
 
-  render() {
     return (
       <Fragment>
         <div>
-          <li onClick={() => this.props.nameClick(this.props.cowObj)}>
-            {this.props.cowObj.name}
+          <li onClick={() => nameClick(cowObj)}>
+            {cowObj.name}
           </li>
         </div>
       </Fragment>
     );
-  }
 }
