@@ -68,7 +68,16 @@ export default class App extends Component {
 
   handleUpdateCow(updatedCow) {
     console.log(updatedCow);
-    console.log(this.state.selectedCow.id)
+    if (!updatedCow.name && !updatedCow.description) {
+      alert('Fill out the fields');
+      return;
+    }
+    if (!updatedCow.name) {
+      updatedCow.name = this.state.selectedCow.name;
+    }
+    if (!updatedCow.description) {
+      updatedCow.description = this.state.selectedCow.description;
+    }
     axios.put(`http://localhost:3000/api/cows/${this.state.selectedCow.id}`, updatedCow)
       .then(() => {
         return axios.get('http://localhost:3000/api/cows')
