@@ -4,13 +4,16 @@ export default class Cow extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    // BINDERS
   };
 
   render() {
     return (
       <Fragment>
         <div>
-          <li>{this.props.cowObj.name}</li>
+          <li onClick={() => this.props.nameClick(this.props.cowObj)}>
+            {this.props.cowObj.name}
+          </li>
         </div>
       </Fragment>
     );

@@ -12,11 +12,12 @@ export default class Cows extends Component {
       <Cow
         key={cow.id}
         cowObj={cow}
+        nameClick={this.props.nameClick}
       />
     ));
     return (
       <Fragment>
-        <h1>Welcome to the Slaughter House</h1>
+        <h1>Welcome to the Farm!</h1>
         {mappedCows}
       </Fragment>
     );
