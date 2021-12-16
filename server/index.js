@@ -13,8 +13,9 @@ app.get('/api/cows', (req, res) => {
   dbIndex.getAllCows((err, cows) => {
     if (err) {
       console.error(err);
+      res.status(404).json('Not found');
     } else {
-      res.json(cows);
+      res.status(200).json(cows);
     }
   })
 });
@@ -25,8 +26,9 @@ app.post('/api/cows', (req, res) => {
   dbIndex.createCow(newCow, (err, data) => {
     if (err) {
       console.error(err);
+      res.status(400).json('Not able to add cow');
     } else {
-      res.json('Posted!')
+      res.status(201).json('Posted!');
     }
   })
 });
@@ -38,8 +40,9 @@ app.put('/api/cows/:id', (req, res) => {
   dbIndex.updateCow(id, cow, (err, data) => {
     if (err) {
       console.error(err);
+      res.status(400).json('Not able to update cow');
     } else {
-      res.json('Updated!');
+      res.status(200).json('Updated!');
     }
   })
 });
@@ -49,8 +52,9 @@ app.delete('/api/cows/:id', (req, res) => {
   dbIndex.deleteCow(id, (err, data) => {
     if (err) {
       console.error(err);
+      res.status(400).json('Not able to delete cow');
     } else {
-      res.json('Deleted!');
+      res.status(200).json('Deleted!');
     }
   })
 });
