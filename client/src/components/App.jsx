@@ -21,13 +21,6 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    // try {
-    //   const res = await axios.get('http://localhost:3000/api/cows');
-    //   this.setState({ cowList: res.data });
-    // } catch (err) {
-    //   console.error(err);
-    // }
-
     axios.get('http://localhost:3000/api/cows')
       .then(res => {
         console.log(res.data);

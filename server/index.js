@@ -28,7 +28,7 @@ app.post('/api/cows', (req, res) => {
       console.error(err);
       res.status(400).json('Not able to add cow');
     } else {
-      res.status(201).json('Posted!');
+      res.status(201).send('Posted!');
     }
   })
 });
