@@ -28,7 +28,7 @@ app.post('/api/cows', (req, res) => {
       console.error(err);
       res.status(400).json('Not able to add cow');
     } else {
-      res.status(201).send('Posted!');
+      res.status(201).json(req.body);
     }
   })
 });
@@ -42,19 +42,20 @@ app.put('/api/cows/:id', (req, res) => {
       console.error(err);
       res.status(400).json('Not able to update cow');
     } else {
-      res.status(200).json('Updated!');
+      res.status(200).json(req.body);
     }
   })
 });
 
 app.delete('/api/cows/:id', (req, res) => {
+  const { name, description } = req.body;
   const { id } = req.params;
   dbIndex.deleteCow(id, (err, data) => {
     if (err) {
       console.error(err);
       res.status(400).json('Not able to delete cow');
     } else {
-      res.status(200).json('Deleted!');
+      res.status(200).json(req.body);
     }
   })
 });
