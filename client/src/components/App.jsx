@@ -85,7 +85,16 @@ export default class App extends Component {
   }
 
   handleDeleteCow() {
-    axios.delete(`http://localhost:3000/api/cows/${this.state.selectedCow.id}`)
+    const specificCow = {
+      name: this.state.selectedCow.name,
+      description: this.state.selectedCow.description
+    };
+
+    axios({
+        url: `http://localhost:3000/api/cows/${this.state.selectedCow.id}`,
+        method: 'delete',
+        data: specificCow
+    })
       .then(() => {
         return axios.get('http://localhost:3000/api/cows')
           .then(res => {
