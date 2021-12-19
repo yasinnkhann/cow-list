@@ -1,71 +1,68 @@
-const mysql = require('mysql');
+const mongoose = require('mongoose');
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'password',
-  database: 'cowlist2'
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+};
+
+mongoose.connect('mongodb://localhost/cowList', options);
+
+const cowSchema = mongoose.Schema({
+  name: String,
+  description: String
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Connected to MySQL!')
+const Cow = mongoose.model('Cow', cowSchema);
+
+const getCows = async cb => {
+  try {
+    const cows = await Cow.find({});
+    cb(cows, null);
+  } catch (err) {
+    cb(err, null);
   }
-});
+};
 
-// Your Database Queries Here!!
+const postCow = async (cowDetails, cb) => {
+  const { name, description } = cowDetails;
 
+  try {
+    const editedCow = {
+      name,
+      description
+    };
 
-// Don't forget to export your functions!
+    const freshCow = new Cow(editedCow);
+    const savedCow = await freshCow.save();
+    cb(null, savedCow._doc);
+  } catch (err) {
+    cb(err, null);
+  }
+};
+
+const editCow = async (id, newCowInfo, cb) => {
+  const { name, description } = newCowInfo;
+
+  try {
+    const updatedCow = await Cow.findOneAndUpdate({ _id: id }, { name, description })
+    cb(null, updatedCow._doc)
+  } catch (err) {
+    cb(err, null);
+  }
+};
+
+const deleteCow = async (id, cb) => {
+  try {
+    const deletedCow = await Cow.deleteOne({ _id: id });
+    cb(null, deletedCow);
+  } catch (err) {
+    cb(err, null);
+  }
+};
+
 module.exports = {
-  getAllCows: function(cb) {
-    const queryStr = 'SELECT * FROM cows2;';
-    connection.query(queryStr, (err, data) => {
-      if (err) {
-        cb(err, null);
-      } else {
-        cb(null, data);
-      }
-    })
-  },
-
-  createCow: function(cowDetails, cb) {
-    const name = cowDetails.name;
-    const description = cowDetails.description;
-    const queryStr = 'INSERT INTO cows2 (name, description) VALUES (?, ?);';
-
-    connection.query(queryStr, [name, description], (err, data) => {
-      if (err) {
-        cb(err, null);
-      } else {
-        cb(null, data);
-      }
-    })
-  },
-
-  updateCow: function(id, cowToUpdate, cb) {
-    const queryStr = 'UPDATE cows2 SET name = ?, description = ? WHERE id = ?;';
-    const name = cowToUpdate.name;
-    const description = cowToUpdate.description;
-    connection.query(queryStr, [name, description, id], (err, data) => {
-      if (err) {
-        cb(err, null);
-      } else {
-        cb(null, data);
-      }
-    })
-  },
-
-  deleteCow: function(id, cb) {
-    const queryStr = 'DELETE FROM cows2 WHERE id = ?;';
-    connection.query(queryStr, id, (err, data) => {
-      if (err) {
-        cb(err, null);
-      } else {
-        cb(null, data);
-      }
-    })
-  }
+  getCows,
+  postCow,
+  editCow,
+  deleteCow
 };
