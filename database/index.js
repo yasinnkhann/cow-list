@@ -5,7 +5,7 @@ const options = {
 	useUnifiedTopology: true,
 };
 
-mongoose.connect('mongodb://localhost/cowList', options);
+mongoose.connect('mongodb://localhost/cowlist', options);
 
 const cowSchema = mongoose.Schema({
 	name: String,
